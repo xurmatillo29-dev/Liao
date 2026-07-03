@@ -1,0 +1,35 @@
+name: Build Xiaomi 12 Lite Kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Maksimal joy ochish (Xatoliklarni oldini olish)
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 512
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+
+    - name: Muhitni tayyorlash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 libncurses6
+
+    - name: Clang Compiler yuklash
+      run: |
+        mkdir clang
+        cd clang
+        curl -LO "https://googlesource.com"
+        tar -xf clang-r530567.tar.gz
+        rm clang-r530567.tar.gz
+        echo "$GITHUB_WORKSPACE/clang/bin" >> $GITHUB_PATH
+
+    - name: Kernel Source yuklash (LineageOS 21)
+      run: |
+        git clone --depth=1 
