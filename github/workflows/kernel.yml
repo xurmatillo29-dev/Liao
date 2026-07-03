@@ -1,0 +1,21 @@
+ -b lineage-21 kernel
+        # Diqqat: Agar sizda boshqa source bo'lsa, yuqoridagi link va branch (-b) ni o'zgartiring
+
+    - name: Kernelni Build qilish
+      run: |
+        cd kernel
+        export ARCH=arm64
+        export SUBARCH=arm64
+        export CC=clang
+        export CLANG_TRIPLE=aarch64-linux-gnu-
+        
+        make O=out taoyao_defconfig
+        make -j$(nproc --all) O=out
+
+    - name: Tayyor Kernelni yuklab olish uchun saqlash
+      uses: actions/upload-artifact@v4
+      with:
+        name: Xiaomi-12Lite-Kernel
+        path: |
+          kernel/out/arch/arm64/boot/Image
+          kernel/out/arch/arm64/boot/dtb
